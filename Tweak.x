@@ -87,6 +87,10 @@ static const opt_entry kOptions[] = {
 	// { "alwaysHaveABadTime", "true",  1 },  // eliminate DoubleShape → no addrof/fakeobj
     { "forceGCSlowPaths",  "true",  1 },   // GC slow path → more safety checks
     { "useConcurrentGC",   "false", 1 },   // no GC races (CVE-2025-43529)
+    // useAccessInlining = false
+    // usePolymorphicAccessInlining = false
+    // forcePolyProto = true
+    // useArrayAllocationProfiling = false
     // Level 2: disable JIT speculation
     { "useDFGJIT",         "false", 2 },   // no speculative opt (CVE-2025-31277)
     { "useFTLJIT",         "false", 2 },   // disable most aggressive JIT tier
@@ -246,6 +250,21 @@ static void hooked_JSC_JSGlobalObject_init(void *this, void *vm) {
 
 %end
 
+//Bootstrap global support
+__attribute__ ((visibility ("default"))) const char** webcontent_environs()
+{
+    int maxcount = sizeof(kOptions)/sizeof(kOptions[0]) + 1;
+    const char** envs = calloc(maxcount, sizeof(char*));
+    int i = 0;
+    for (const opt_entry *o = kOptions; o->name; o++) {
+        if (o->min_level > g_WKWebView_level) continue;
+        static char buf[128];
+        snprintf(buf, sizeof(buf), "JSC_%s=%s", o->name, o->value);
+        envs[i++] = strdup(buf);
+    }
+    return envs;
+}
+
 // ============================================================
 // Constructor
 // ============================================================
@@ -262,6 +281,15 @@ void* _MSFindSymbol(MSImageRef image, const char *symbol) {
 
 %ctor {
 
+    char executablePath[PATH_MAX]={0};
+    uint32_t size = sizeof(executablePath);
+    _NSGetExecutablePath(executablePath, &size);
+    
+    if(strcmp(basename(executablePath), "xpcproxy") == 0)
+    {
+        return;
+    }
+
     if(access(jbroot("/.thebootstrapped"), F_OK) == 0)
     {
         NSLog(@"Starting in Bootstrap - level %d", g_WKWebView_level);
@@ -270,9 +298,6 @@ void* _MSFindSymbol(MSImageRef image, const char *symbol) {
         return;
     }
 
-    char executablePath[PATH_MAX]={0};
-    uint32_t size = sizeof(executablePath);
-    _NSGetExecutablePath(executablePath, &size);
     if(strcmp(basename(executablePath), "com.apple.WebKit.WebContent") != 0)
     {
         return;

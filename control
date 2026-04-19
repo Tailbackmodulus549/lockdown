@@ -1,6 +1,6 @@
 Package: com.roothide.lockdown
 Name: lockdown
-Version: 1.0.3
+Version: 2.0
 Architecture: iphoneos-arm64
 Description: JSC security hardening for WebContent process. Configures JavaScriptCore options to eliminate exploit primitives (addrof/fakeobj, JIT type confusion, GC UAF). Enabled by default!
 Maintainer: roothide
